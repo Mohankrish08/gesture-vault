@@ -35,7 +35,9 @@ class DrawPage():
                 while titleX >= (cfg["screen_x"]+50):
                     fontSize = fontSize - 0.25
                     titleX = self.getXOrgofText(title,font,fontSize,titletness)
-                cv2.putText(img, title, (titleX, titleY), font, fontSize, titleclr, titletness)
+                cv2.rectangle(img, (70,50), (1200,150), (0,0,0), -1)
+                cv2.putText(img, title, (titleX-10, titleY-10), font, fontSize, titleclr, titletness)
+                #print(titleX, titleY)
 
     # This function returns the width of the text.
     def getXOrgofText(self, text, fontFace, fontScale, thickness):
