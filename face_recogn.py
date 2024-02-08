@@ -1,31 +1,65 @@
 import face_recognition
 import os
+import numpy as np
+import pickle
+import cv2
 from config import cfg
 
 
 class FaceRec():
 
-    def __init__(self, facespath = "E:\\GitHub\\gesture-vault\\images"):
+    def __init__(self, filepath='gesture-vault\\Project', embedding_path='gesture-vault\\embeddings.pkl'):
         self.faces = []
-        # Store encodings of all the pictures from our database in memory.
-        for file in os.listdir(facespath):
-            if file.endswith(".jpeg") or file.endswith(".jpg") or file.endswith(".JPG"):
-                img = face_recognition.load_image_file(os.path.join(facespath, file))
-                self.faces.append(face_recognition.face_encodings(img)[0])
+        self.personName = []
+
+        for i in os.listdir(filepath):
+            self.personName.append(os.path.splitext(i)[0])
+        print('--------------------------------')
+        print(self.personName)
+        print('--------------------------------')
 
 
-    def MatchTheFace(self, img):
-        # Get encodings of the image/frame from the camera.
-        encodings = face_recognition.face_encodings(img)
+    def MatchTheFace(self,img, embedding_path='gesture-vault\\embeddings.pkl'):
 
-        # If encoding of any face is present then get it, else say no face matched.
-        if len(encodings) > 0:
-            encodings = encodings[0]
-        else:
-            return False
+        try:   
+            with open(embedding_path, 'rb') as file:
+                embeddings = pickle.load(file)
+        except Exception as e:
+            print(e)
 
-        comparisons = face_recognition.compare_faces(self.faces, encodings, tolerance=cfg["tolerance"])
+        facesInFrame = face_recognition.face_locations(img)
+        encodeFacesInFrame = face_recognition.face_encodings(img, facesInFrame)
 
-        # Return true only if at least one of the face matches in database matches wit clicked picture.
-        return True if any(comparisons) else False
+        for encodeFace, faceloc in zip(encodeFacesInFrame, facesInFrame) :
+            matches = face_recognition.compare_faces(embeddings, encodeFace, tolerance=cfg["tolerance"])
+            facedis = face_recognition.face_distance(embeddings, encodeFace)
+            #print(facedis)
+            matchIndex = np.argmin(facedis)
+
+            if matches[matchIndex] :
+                name = self.personName[matchIndex]
+                #self.currentUser.append(name)
+                print(name)
+                faceCascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+                faces = faceCascade.detectMultiScale(img,1.3,3)
+            
+
+                if len(faces)==1:
+
+                    for(x,y,w,h) in faces:
+                        cv2.rectangle(img, (x,y), (x+w, y+h), (0,255,0),5)
+                        #cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 255, 0), 3)
+                        #cv2.rectangle(frame, (x1, y2-25), (x2, y2), (0, 255, 0), cv2.FILLED)
+                        cv2.putText(img , name, (x+6, y-6), cv2.FONT_HERSHEY_COMPLEX, 1, (255, 255, 255), 2)
+
+                if name in self.personName:
+                    #print(name)
+                    return True, name
+        return False, ''
+                    
+
+        
+    
+
+
 
