@@ -6,7 +6,7 @@ cfg = {
     "min_detection_confidence": 0.65, # What % of confidence is required to detect the hand
     "min_tracking_confidence": 0.65, # What % of confidence is required to track the hand
     "max_num_hands": 1, # How many hands are allowed to be tracked.
-    "tolerance": 0.75, # the confidence or matching % for matching two faces
+    "tolerance": 0.4, # the confidence or matching % for matching two faces
     "alpha": 0.75, # The amount bleding to be done while overlaying one image on top of another
     "btnClickDelay": 1.5, # Amount of seconds the fingertips has to be inside the circle to make a click
     "btnclr" : (105,105,105), # BGR Colour of all the buttons
