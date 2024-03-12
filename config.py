@@ -6,7 +6,7 @@ cfg = {
     "min_detection_confidence": 0.65, # What % of confidence is required to detect the hand
     "min_tracking_confidence": 0.65, # What % of confidence is required to track the hand
     "max_num_hands": 1, # How many hands are allowed to be tracked.
-    "tolerance": 0.4, # the confidence or matching % for matching two faces
+    "tolerance": 0.5, # the confidence or matching % for matching two faces
     "alpha": 0.75, # The amount bleding to be done while overlaying one image on top of another
     "btnClickDelay": 1.5, # Amount of seconds the fingertips has to be inside the circle to make a click
     "btnclr" : (105,105,105), # BGR Colour of all the buttons
@@ -31,6 +31,7 @@ cfg = {
         "thickness": 2
     },
     "currentpage": "FaceRec", # Starting page is always facerec as it's the login page.
+    "sqlitepage": "db_connector",
     "pages": {
         "FaceRec":{
             "pagetitle":["Select Match to match your face and Login", 100, 1.5, (60,216,65), 4],
@@ -88,12 +89,12 @@ cfg = {
         "ReceiptBL": {
             "pagetitle": ["Do you want a Receipt?", 150, 2, (255,0,0), 4],
             "buttons":["Yes", "", "No"],
-            "navigation": ["BLDoneR", "", "BLDone"]
+            "navigation": ["ReceiptGen", "", "BLDone"]
         },
-        "BLDoneR": {
-            "pagetitle": ["Your Balance is Rs.5000. Please take Receipt", 150, 1.5, (255,0,0), 4],
-            "buttons":["", "", "", "", "", "", "New Txn", "Done"],
-            "navigation": ["", "", "", "", "", "", "Transactions", "Exit"]
+        "ReceiptGen" : {
+            "pagetitle": ["This is under testing phase", 150,2,(255,0,0),4],
+            "buttons": ["Ok"],
+            "navigation": ["BLDone"]
         },
         "BLDone": {
             "pagetitle": ["Your Balance is Rs.5000.", 150, 2, (255,0,0), 4],
