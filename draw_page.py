@@ -1,6 +1,10 @@
 from config import cfg
 import cv2
+from sqlite import *
+from face_recogn import *
 from operator import itemgetter
+
+csv_file = 'gesture-vault\\Test.csv'
 
 class DrawPage():
 
@@ -8,6 +12,7 @@ class DrawPage():
         self.pages = pages
 
     def drawThePage(self, pageName, img):
+        self.pageName = pageName
         buttons = self.pages[pageName]["buttons"]
         btnclr = cfg["btnclr"]
         R = cfg["btnparams"]["R"]
@@ -38,6 +43,11 @@ class DrawPage():
                 cv2.rectangle(img, (70,50), (1200,150), (0,0,0), -1)
                 cv2.putText(img, title, (titleX-10, titleY-10), font, fontSize, titleclr, titletness)
                 #print(titleX, titleY)
+            
+        if self.pageName == "ReceiptGen":
+            # cv2.putText(img,"This is under testing phase", (50,50), cv2.FONT_HERSHEY_SIMPLEX, 1, (255,0,0), 1, cv2.LINE_AA)
+            #cv2.putText(img, db_connector(csv_file, 'Mohan krishnan'), (750,300), cv2.FONT_HERSHEY_SIMPLEX, 1, (255,0,0), 1, cv2.LINE_AA)
+            cv2.putText(img, '5000', (850,550), cv2.FONT_HERSHEY_SIMPLEX, 5, (255,0,0), 1, cv2.LINE_AA)
 
     # This function returns the width of the text.
     def getXOrgofText(self, text, fontFace, fontScale, thickness):

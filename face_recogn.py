@@ -8,7 +8,7 @@ from config import cfg
 
 class FaceRec():
 
-    def __init__(self, filepath='gesture-vault\\Project', embedding_path='gesture-vault\\embeddings.pkl'):
+    def __init__(self, filepath='.\Project', embedding_path='.\embeddings.pkl'):
         self.faces = []
         self.personName = []
 
@@ -19,7 +19,7 @@ class FaceRec():
         print('--------------------------------')
 
 
-    def MatchTheFace(self,img, embedding_path='gesture-vault\\embeddings.pkl'):
+    def MatchTheFace(self,img, embedding_path='.\embeddings.pkl'):
 
         try:   
             with open(embedding_path, 'rb') as file:
