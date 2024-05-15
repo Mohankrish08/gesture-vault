@@ -3,34 +3,30 @@ import cv2
 cfg = {
     "screen_x": 1280,
     "screen_y": 720,
-    "min_detection_confidence": 0.65, # What % of confidence is required to detect the hand
-    "min_tracking_confidence": 0.65, # What % of confidence is required to track the hand
-    "max_num_hands": 1, # How many hands are allowed to be tracked.
-    "tolerance": 0.5, # the confidence or matching % for matching two faces
-    "alpha": 0.75, # The amount bleding to be done while overlaying one image on top of another
-    "btnClickDelay": 1.5, # Amount of seconds the fingertips has to be inside the circle to make a click
-    "btnclr" : (105,105,105), # BGR Colour of all the buttons
-    "txtclr" : (255,255,255), # BGR Colour of all the text only on buttons
+    "min_detection_confidence": 0.65, 
+    "min_tracking_confidence": 0.65, 
+    "max_num_hands": 1,
+    "tolerance": 0.5, 
+    "alpha": 0.75, 
+    "btnClickDelay": 1.5, 
+    "btnclr" : (105,105,105), 
+    "txtclr" : (255,255,255), 
     "btnparams": {
-        "W": 400, # width of the button
-        "H": 80, # height of the button
-        "BtnSp": 20, # space between two buttons
-        "R": 40, # Radius of the button circles for each rectangle button. 1/2 * H
-        "CirSp": 50 # Space between edge of rectangle and center of the circle button
+        "W": 400, 
+        "H": 80, 
+        "BtnSp": 20, 
+        "R": 40, 
+        "CirSp": 50 
     },
     "txtparams": {
-        # amount of pixels by which putText origin has to be adjusted w.r.t top left corner
-        # of the rectangle button
+
         "xadj": +20,
         "yadj": -20,
-        # Integer denoting font which is HERSHEY as per CV2 module
         "font": cv2.FONT_HERSHEY_SIMPLEX,
-        # Size of the font
         "fontScale": 1.8,
-        # How thick the font should be
         "thickness": 2
     },
-    "currentpage": "FaceRec", # Starting page is always facerec as it's the login page.
+    "currentpage": "FaceRec",
     "sqlitepage": "db_connector",
     "pages": {
         "FaceRec":{
@@ -39,21 +35,12 @@ cfg = {
             "navigation": ["","","","","","","","Match"]
         },
         "Transactions":{
-            # List corresponding to pagetitle is as follows from left to right:
-            # title text, H of text, font size, text colour, text thickness
             "pagetitle": ["Select Any Transaction", 150, 2, (255,0,0), 4],
-            # Sequence of buttons wrt this list is as follows:
-            # 1 -       - 2
-            # 3 -       - 4
-            # 5 -       - 6
-            # 7 -       - 8
             "buttons":["Withdraw", "Balance", "Transfer", "Deposit", "", "" , "Exit", ""],
-            # This is the "pages" to which each of these buttons will navigate to when selected.
             "navigation": ["Withdraw-SelAccType", "Balance-SelAccType", "Transfer-SelAccType",
                            "Deposit-SelAccType", "", "", "Exit", ""]
         },
 
-        # All the pages for Withdrawal transaction
         "Withdraw-SelAccType" : {
             "pagetitle": ["Select Account Type", 150, 2, (255,0,0), 4],
             "buttons":["", "Savings", "", "Checking", "", "Credit"],
@@ -92,7 +79,7 @@ cfg = {
             "navigation": ["ReceiptGen", "", "BLDone"]
         },
         "ReceiptGen" : {
-            "pagetitle": ["This is under testing phase", 150,2,(255,0,0),4],
+            "pagetitle": ["Your Savings Account Balance", 150,2,(255,0,0),4],
             "buttons": ["Ok"],
             "navigation": ["BLDone"]
         },
