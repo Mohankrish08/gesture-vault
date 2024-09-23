@@ -5,6 +5,7 @@ from draw_page import DrawPage
 from detect_click import DetectClick
 import datetime
 from face_recogn import FaceRec
+from sqlite import db_connector
 
 
 def main():
@@ -20,7 +21,7 @@ def main():
     detClick = DetectClick([s[-1] for s in coords])
 
     faceRec = FaceRec()
-    face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+    #face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
 
     mp_hands = mp.solutions.hands.Hands(
         min_detection_confidence = cfg["min_detection_confidence"],
@@ -41,10 +42,24 @@ def main():
             output = cv2.flip(image, 1).copy()
 
             if (("face_matched" in cfg and not cfg["face_matched"]) or "face_matched" not in cfg) and cfg["currentpage"] == "Match":
+                faceCascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
                 gray = cv2.cvtColor(output, cv2.COLOR_BGR2GRAY)
-                faces = face_cascade.detectMultiScale(gray, 1.05, 5)
-                cfg["face_matched"] = faceRec.MatchTheFace(image) if len(faces) >= 1 else False
-                cfg["currentpage"] = "Transactions" if cfg["face_matched"] == True else "FaceRec"
+                faces = faceCascade.detectMultiScale(gray, 1.05, 5)
+                cfg["face_matched"], name = faceRec.MatchTheFace(image)
+                if cfg['face_matched']:
+                    print(name)
+                if len(faces)==1:
+                    for(x,y,w,h) in faces:
+                        cv2.rectangle(output, (x,y), (x+w, y+h), (0,255,0),5)
+                        if cfg['face_matched']:
+                            cv2.putText(output, name, (x+6, y-6), cv2.FONT_HERSHEY_COMPLEX, 1, (255, 255, 255), 2)
+                        else:
+                            cv2.putText(output, "Unknown", (x+6, y-6), cv2.FONT_HERSHEY_COMPLEX, 1, (255, 255, 255), 2)
+                cfg["currentpage"] = "Transactions" if cfg["face_matched"] else "FaceRec"
+                newott = db_connector('.\Test.csv', name)
+                #print(newott)
+
+                
 
             dwPg.drawThePage(cfg["currentpage"], overlay)
 
